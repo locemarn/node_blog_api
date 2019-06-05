@@ -7,9 +7,9 @@ describe('Routes: Posts', () => {
     likes: 100
   }
 
-  describe('GET /posts', () => {
+  describe('GET /api/posts', () => {
     it('should return a list of posts', done => [
-      request.get('/posts').end((err, res) => {
+      request.get('/api/posts').end((err, res) => {
         expect(res.body[0]).to.eql(defaultPost)
         done(err)
       })
