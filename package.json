@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "./node_modules/.bin/prettier-eslint 'server.js' && ./node_modules/.bin/prettier-eslint 'src/**/*.js' && ./node_modules/.bin/prettier-eslint 'test/**/*.js'",
     "lint:fix": "./node_modules/.bin/prettier-eslint 'server.js' --write && ./node_modules/.bin/prettier-eslint 'src/**/*.js' --write && ./node_modules/.bin/prettier-eslint 'test/**/*.js' --write",
-    "start": "babel-node ./server.js",
+    "start": "nodemon --exec babel-node ./server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "husky": {
@@ -31,6 +31,7 @@
     "eslint-plugin-standard": "^4.0.0",
     "husky": "^2.3.0",
     "lint-staged": "^8.1.7",
+    "nodemon": "^1.19.1",
     "prettier-eslint": "^8.8.2",
     "prettier-eslint-cli": "^4.7.1"
   },
