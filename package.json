@@ -7,7 +7,8 @@
     "lint": "./node_modules/.bin/prettier-eslint 'server.js' && ./node_modules/.bin/prettier-eslint 'src/**/*.js' && ./node_modules/.bin/prettier-eslint 'test/**/*.js'",
     "lint:fix": "./node_modules/.bin/prettier-eslint 'server.js' --write && ./node_modules/.bin/prettier-eslint 'src/**/*.js' --write && ./node_modules/.bin/prettier-eslint 'test/**/*.js' --write",
     "start": "nodemon --exec babel-node ./server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:integration": "NODE_ENV=test mocha --opts test/integration/mocha.opts test/integration/**/*.js"
   },
   "husky": {
     "hooks": {
