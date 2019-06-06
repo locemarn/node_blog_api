@@ -1,7 +1,6 @@
-/* eslint-disable no-undef */
-/* eslint-disable no-unused-expressions */
 import PostsController from '../../../src/controllers/posts'
 import sinon from 'sinon'
+import Posts from '../../../src/models/posts'
 
 describe('Controllers:: Posts', () => {
   const defautPost = [
@@ -14,18 +13,37 @@ describe('Controllers:: Posts', () => {
   ]
 
   describe('getAll() posts', () => {
-    it('should return a lis of posts', () => {
+    it('should call send with a list of posts', () => {
       const request = {}
       const response = {
         send: sinon.spy()
       }
 
-      const postsController = new PostsController()
+      Posts.find = sinon.stub()
 
-      postsController.getAll(request, response)
+      Posts.find.withArgs({}).resolves(defautPost)
 
-      expect(response.send.called).to.be.true
-      expect(response.send.calledWith(defautPost))
+      const postsController = new PostsController(Posts)
+      return postsController.getAll(request, response).then(() => {
+        sinon.assert.calledWith(response.send, defautPost)
+      })
+    })
+
+    it('should return 400 when an error occurs', () => {
+      const request = {}
+      const response = {
+        send: sinon.spy(),
+        status: sinon.stub()
+      }
+
+      response.status.withArgs(400).returns(response)
+      Posts.find = sinon.stub()
+      Posts.find.withArgs({}).rejects({ message: 'Error' })
+
+      const postsController = new PostsController(Posts)
+      return postsController.getAll(request, response).then(() => {
+        sinon.assert.calledWith(response.send, 'Error')
+      })
     })
   })
 })

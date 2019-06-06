@@ -1,13 +1,12 @@
 class PostsController {
+  constructor (Posts) {
+    this.Posts = Posts
+  }
+
   getAll (req, res) {
-    return res.send([
-      {
-        title: 'Default title',
-        description: 'Default description',
-        author: 'Default author',
-        likes: 100
-      }
-    ])
+    return this.Posts.find({})
+      .then(posts => res.send(posts))
+      .catch(err => res.status(400).send(err.message))
   }
 }
 
