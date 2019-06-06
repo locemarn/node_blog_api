@@ -17,9 +17,11 @@ describe('Routes: Posts', () => {
     likes: 100
   }
 
+  const defaultId = '56cb91bdc3464f14678934ca'
+
   const expectedPost = {
     __v: 0,
-    _id: '56cb91bdc3464f14678934ca',
+    _id: defaultId,
     title: 'Default title',
     description: 'Default description',
     author: 'Default author',
@@ -41,5 +43,15 @@ describe('Routes: Posts', () => {
         done(err)
       })
     ])
+
+    context('when an id is specified', done => {
+      it('should return 200 with one post', done => {
+        request.get(`/api/posts/${defaultId}`).end((_err, res) => {
+          expect(res.statusCode).to.eql(200)
+          expect(res.body).to.eql([expectedPost])
+          done(_err)
+        })
+      })
+    })
   })
 })

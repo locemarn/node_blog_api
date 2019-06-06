@@ -3,7 +3,7 @@ import sinon from 'sinon'
 import Posts from '../../../src/models/posts'
 
 describe('Controllers: Posts', () => {
-  const defautPost = [
+  const defaultPost = [
     {
       title: 'Default title',
       description: 'Default description',
@@ -12,20 +12,23 @@ describe('Controllers: Posts', () => {
     }
   ]
 
+  const defaultRequest = {
+    params: {}
+  }
+
   describe('getAll() posts', () => {
     it('should call send with a list of posts', () => {
-      const request = {}
       const response = {
         send: sinon.spy()
       }
 
       Posts.find = sinon.stub()
 
-      Posts.find.withArgs({}).resolves(defautPost)
+      Posts.find.withArgs({}).resolves(defaultPost)
 
       const postsController = new PostsController(Posts)
-      return postsController.getAll(request, response).then(() => {
-        sinon.assert.calledWith(response.send, defautPost)
+      return postsController.getAll(defaultRequest, response).then(() => {
+        sinon.assert.calledWith(response.send, defaultPost)
       })
     })
 
@@ -43,6 +46,29 @@ describe('Controllers: Posts', () => {
       const postsController = new PostsController(Posts)
       return postsController.getAll(request, response).then(() => {
         sinon.assert.calledWith(response.send, 'Error')
+      })
+    })
+  })
+
+  describe('getById()', () => {
+    it('should call send with one posts', () => {
+      const fakeId = 'a-fake-id'
+      const request = {
+        params: {
+          id: fakeId
+        }
+      }
+      const response = {
+        send: sinon.spy()
+      }
+
+      Posts.find = sinon.stub()
+      Posts.find.withArgs({ _id: fakeId }).resolves(defaultPost)
+
+      const postsController = new PostsController(Posts)
+
+      return postsController.getById(request, response).then(() => {
+        sinon.assert.calledWith(response.send, defaultPost)
       })
     })
   })
