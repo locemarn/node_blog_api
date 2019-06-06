@@ -1,12 +1,12 @@
 import mongoose from 'mongoose'
 
-const schema = new mongoose.Schema({
+const postsSchema = new mongoose.Schema({
   title: String,
   description: String,
   author: String,
-  like: Number
+  likes: Number
 })
 
-const Posts = mongoose.model('Posts', schema)
+const Posts = mongoose.model('Posts', postsSchema)
 
 export default Posts

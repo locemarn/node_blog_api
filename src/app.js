@@ -7,7 +7,7 @@ const app = express()
 
 const configureExpress = () => {
   app.use(bodyParser.json())
-  app.use('/', routes)
+  app.use('/api', routes)
 
   return app
 }

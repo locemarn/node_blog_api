@@ -2,7 +2,7 @@ import PostsController from '../../../src/controllers/posts'
 import sinon from 'sinon'
 import Posts from '../../../src/models/posts'
 
-describe('Controllers:: Posts', () => {
+describe('Controllers: Posts', () => {
   const defautPost = [
     {
       title: 'Default title',
