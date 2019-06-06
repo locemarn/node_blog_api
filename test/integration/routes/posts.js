@@ -54,4 +54,38 @@ describe('Routes: Posts', () => {
       })
     })
   })
+
+  describe('POST /posts', () => {
+    context('when posting a post', () => {
+      it('should return a new post with status code 201', done => {
+        const customId = '56cb91bdc3464f14678934ba'
+        const newPost = Object.assign(
+          {},
+          {
+            _id: customId,
+            __v: 0
+          },
+          defaultPost
+        )
+
+        const expectedSavedPosts = {
+          __v: 0,
+          _id: customId,
+          title: 'Default title',
+          description: 'Default description',
+          author: 'Default author',
+          likes: 100
+        }
+
+        request
+          .post('/api/posts')
+          .send(newPost)
+          .end((err, res) => {
+            expect(res.statusCode).to.eql(201)
+            expect(res.body).to.eql(expectedSavedPosts)
+            done(err)
+          })
+      })
+    })
+  })
 })

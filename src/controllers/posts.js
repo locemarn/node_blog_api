@@ -19,6 +19,15 @@ class PostsController {
       .then(posts => res.send(posts))
       .catch(err => res.status(400).send(err.message))
   }
+
+  create (req, res) {
+    const post = new this.Posts(req.body)
+
+    return post
+      .save()
+      .then(() => res.status(201).send(post))
+      .catch(err => res.status(422).send(err.message))
+  }
 }
 
 export default PostsController

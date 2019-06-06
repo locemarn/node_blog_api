@@ -72,4 +72,63 @@ describe('Controllers: Posts', () => {
       })
     })
   })
+
+  describe('create() post', () => {
+    it('should call send with a ner post', () => {
+      const requestWithBody = Object.assign(
+        {},
+        {
+          body: defaultPost[0]
+        },
+        defaultRequest
+      )
+
+      const response = {
+        send: sinon.spy(),
+        status: sinon.stub()
+      }
+      class fakePost {
+        save () {}
+      }
+
+      response.status.withArgs(201).returns(response)
+      sinon
+        .stub(fakePost.prototype, 'save')
+        .withArgs()
+        .resolves()
+
+      const postsController = new PostsController(fakePost)
+
+      return postsController.create(requestWithBody, response).then(() => {
+        sinon.assert.calledWith(response.send)
+      })
+    })
+
+    context('when an error occurs', () => {
+      it('should return 422', () => {
+        const response = {
+          send: sinon.spy(),
+          status: sinon.stub()
+        }
+
+        class fakePost {
+          save () {}
+        }
+
+        response.status.withArgs(422).returns(response)
+        sinon
+          .stub(fakePost.prototype, 'save')
+          .withArgs()
+          .rejects({
+            message: 'Error'
+          })
+
+        const postsController = new PostsController(fakePost)
+
+        return postsController.create(defaultPost, response).then(() => {
+          sinon.assert.calledWith(response.status, 422)
+        })
+      })
+    })
+  })
 })
