@@ -212,4 +212,66 @@ describe('Controllers: Posts', () => {
       })
     })
   })
+
+  describe('delete() post', () => {
+    it('should respond with 204 when the post is deleted', () => {
+      const fakeId = 'a-fake-id'
+      const request = {
+        params: {
+          id: fakeId
+        }
+      }
+      const response = {
+        sendStatus: sinon.spy()
+      }
+
+      class fakePost {
+        static deleteOne () {}
+      }
+
+      const removeStub = sinon.stub(fakePost, 'deleteOne')
+
+      removeStub
+        .withArgs({
+          _id: fakeId
+        })
+        .resolves([1])
+
+      const postsController = new PostsController(fakePost)
+
+      return postsController.remove(request, response).then(() => {
+        sinon.assert.calledWith(response.sendStatus, 204)
+      })
+    })
+
+    context('when an error occurs', () => {
+      it('should return 400', () => {
+        const fakeId = 'a-fake-id'
+
+        const request = {
+          params: {
+            id: fakeId
+          }
+        }
+        const response = {
+          send: sinon.spy(),
+          status: sinon.stub()
+        }
+
+        class fakePost {
+          static deleteOne () {}
+        }
+
+        const removeStub = sinon.stub(fakePost, 'deleteOne')
+        removeStub.withArgs({ _id: fakeId }).rejects({ message: 'Error' })
+        response.status.withArgs(400).returns(response)
+
+        const postsController = new PostsController(fakePost)
+
+        return postsController.remove(request, response).then(() => {
+          sinon.assert.calledWith(response.send, 'Error')
+        })
+      })
+    })
+  })
 })

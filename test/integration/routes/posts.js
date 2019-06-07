@@ -46,10 +46,10 @@ describe('Routes: Posts', () => {
 
     context('when an id is specified', done => {
       it('should return 200 with one post', done => {
-        request.get(`/api/posts/${defaultId}`).end((_err, res) => {
+        request.get(`/api/posts/${defaultId}`).end((err, res) => {
           expect(res.statusCode).to.eql(200)
           expect(res.body).to.eql([expectedPost])
-          done(_err)
+          done(err)
         })
       })
     })
@@ -105,6 +105,17 @@ describe('Routes: Posts', () => {
             expect(res.status).to.eql(200)
             done(err)
           })
+      })
+    })
+  })
+
+  describe('DELETE /api/posts/:id', () => {
+    context('when deleting a post', () => {
+      it('should delete a post and return 204 as status code', done => {
+        request.delete(`/api/posts/${defaultId}`).end((err, res) => {
+          expect(res.status).to.eql(204)
+          done(err)
+        })
       })
     })
   })
