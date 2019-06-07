@@ -28,6 +28,17 @@ class PostsController {
       .then(() => res.status(201).send(post))
       .catch(err => res.status(422).send(err.message))
   }
+
+  update (req, res) {
+    return this.Posts.findOneAndUpdate(
+      {
+        _id: req.params.id
+      },
+      req.body
+    )
+      .then(() => res.sendStatus(200))
+      .catch(err => res.status(422).send(err.message))
+  }
 }
 
 export default PostsController

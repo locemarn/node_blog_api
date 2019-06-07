@@ -8,5 +8,6 @@ const postsController = new PostsController(Posts)
 router.get('/', (req, res) => postsController.getAll(req, res))
 router.get('/:id', (req, res) => postsController.getById(req, res))
 router.post('/', (req, res) => postsController.create(req, res))
+router.put('/:id', (req, res) => postsController.update(req, res))
 
 export default router

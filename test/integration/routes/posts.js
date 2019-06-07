@@ -88,4 +88,24 @@ describe('Routes: Posts', () => {
       })
     })
   })
+
+  describe('PUT /posts/:id', () => {
+    context('when editing a post', () => {
+      it('should update the post and return 200 as status code', done => {
+        const customPost = {
+          title: 'Custom Title'
+        }
+
+        const updatedPost = Object.assign({}, customPost, defaultPost)
+
+        request
+          .put(`/api/posts/${defaultId}`)
+          .send(updatedPost)
+          .end((err, res) => {
+            expect(res.status).to.eql(200)
+            done(err)
+          })
+      })
+    })
+  })
 })

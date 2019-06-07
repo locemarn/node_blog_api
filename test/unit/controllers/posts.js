@@ -131,4 +131,85 @@ describe('Controllers: Posts', () => {
       })
     })
   })
+
+  describe('update() post', () => {
+    it('should respond with 200 when the post is updated', () => {
+      const fakeId = 'a-fake-id'
+      const updatedPost = {
+        _id: fakeId,
+        title: 'Default title',
+        description: 'Default description',
+        author: 'Default author',
+        likes: 100
+      }
+
+      const request = {
+        params: {
+          id: fakeId
+        },
+        body: updatedPost
+      }
+      const response = {
+        sendStatus: sinon.spy()
+      }
+
+      class fakePost {
+        static findOneAndUpdate () {}
+      }
+
+      const findOneAndUpdateStub = sinon.stub(fakePost, 'findOneAndUpdate')
+      findOneAndUpdateStub
+        .withArgs(
+          {
+            _id: fakeId
+          },
+          updatedPost
+        )
+        .resolves(updatedPost)
+
+      const postsController = new PostsController(fakePost)
+
+      return postsController.update(request, response).then(() => {
+        sinon.assert.calledWith(response.sendStatus, 200)
+      })
+    })
+
+    context('when an error occurs', () => {
+      it('should return 422', () => {
+        const fakeId = 'a-fake-id'
+        const updatedPost = {
+          _id: fakeId,
+          name: 'Updated post',
+          description: 'Updated description',
+          price: 150
+        }
+        const request = {
+          params: {
+            id: fakeId
+          },
+          body: updatedPost
+        }
+        const response = {
+          send: sinon.spy(),
+          status: sinon.stub()
+        }
+
+        class fakePost {
+          static findOneAndUpdate () {}
+        }
+
+        const findOneAndUpdateStub = sinon.stub(fakePost, 'findOneAndUpdate')
+        findOneAndUpdateStub
+          .withArgs({ _id: fakeId }, updatedPost)
+          .rejects({ message: 'Error' })
+        response.status.withArgs(422).returns(response)
+
+        const postsController = new PostsController(fakePost)
+
+        return postsController.update(request, response).then(() => {
+          sinon.assert.calledWith(response.send, 'Error')
+        })
+      })
+    })
+  })
 })
