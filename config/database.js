@@ -1,9 +1,9 @@
 import mongoose from 'mongoose'
-require('dotenv').config()
+import config from 'config'
 
 mongoose.Promise = Promise
 
-const mongodbUrl = process.env.DB_MONGODB_URL || process.env.DB_MONGODB_URL_TEST
+const mongodbUrl = config.get('database.mongoUrl')
 
 const connect = () =>
   mongoose.connect(mongodbUrl, {

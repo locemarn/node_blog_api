@@ -79,3 +79,6 @@ typings/
 # DynamoDB Local files
 .dynamodb/
 node_modules
+
+config/default.json
+config/test.json
